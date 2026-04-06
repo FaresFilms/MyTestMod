@@ -1,5 +1,11 @@
 package net.kalf.mytestmod;
 import com.mojang.logging.LogUtils;
+import net.kalf.mytestmod.entity.ModEntities;
+import net.kalf.mytestmod.item.ModCreativeModeTabs;
+import net.kalf.mytestmod.item.ModItems;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -24,6 +30,12 @@ public class MyTestMod {
     {
         IEventBus modEventBus = context.getModEventBus();
 
+        ModCreativeModeTabs.register((modEventBus));
+
+        ModItems.register(modEventBus);
+
+        ModEntities.register(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -40,9 +52,11 @@ public class MyTestMod {
     {
     }
 
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.STEEL_INGOT);
+            event.accept(ModItems.SMALL_BULLET);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -58,7 +72,7 @@ public class MyTestMod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-
+            EntityRenderers.register(ModEntities.GRENADE_PROJECTILE.get(), ThrownItemRenderer::new);
         }
     }
 }
