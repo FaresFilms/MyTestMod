@@ -2,5 +2,8 @@
   "item.kalfs_war_mod.steel_ingot": "Steel Ingot",
   "item.kalfs_war_mod.small_bullet": "Small Bullet",
   "item.kalfs_war_mod.grenade": "Grenade",
-  "creativetab.my_tab": "my test mod"
+  "item.kalfs_war_mod.ak_47": "AK47",
+  "creativetab.my_tab": "Kalf's War Mod",
+  "sounds.kalfswarmod.small_explosion": "Small explosion",
+  "sounds.kalfswarmod.massive_explosion": "Massive explosion"
 }

@@ -2,6 +2,7 @@ package net.kalf.kalfswarmod.entity.custom;
 
 import net.kalf.kalfswarmod.entity.ModEntities;
 import net.kalf.kalfswarmod.item.ModItems;
+import net.kalf.kalfswarmod.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -38,7 +39,7 @@ public class GrenadeProjectileEntity extends ThrowableItemProjectile {
     @Override
     protected void onHit(HitResult pResult) {
         if (!this.level().isClientSide()) {
-            int radius = 10;
+            int radius = 4;
             BlockPos center = this.blockPosition();
 
             AABB damageBox = new AABB(this.blockPosition()).inflate(radius);
@@ -80,7 +81,7 @@ public class GrenadeProjectileEntity extends ThrowableItemProjectile {
                 }
             }
             this.level().playSound(null, center.getX(), center.getY(), center.getZ(),
-                    SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0f, 1.0f);
+                    ModSounds.SMALL_EXPLOSION.get(), SoundSource.BLOCKS, 4.0f, 1.0f);
             this.discard();
         }
         super.onHit(pResult);

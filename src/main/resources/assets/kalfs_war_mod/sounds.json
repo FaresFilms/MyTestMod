@@ -1,0 +1,23 @@
+{
+  "small_explosion": {
+    "category": "player",
+    "subtitle": "sounds.kalfswarmod.small_explosion",
+    "sounds": [
+      "kalfs_war_mod:small_explosion"
+    ]
+  },
+  "massive_explosion": {
+    "category": "player",
+    "subtitle": "sounds.kalfswarmod.massive_explosion",
+    "sounds": [
+      "kalfs_war_mod:massive_explosion"
+    ]
+  },
+  "gun_shot_1": {
+    "category": "player",
+    "subtitle": "sounds.kalfswarmod.gun_shot_1",
+    "sounds": [
+      "kalfs_war_mod:gun_shot_1"
+    ]
+  }
+}

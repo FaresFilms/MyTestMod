@@ -20,6 +20,12 @@ public class ModItems {
     public static final RegistryObject<Item> GRENADE = ITEMS.register("grenade",
             () -> new GrenadeItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> BULLET_ENTITY = ITEMS.register("bullet_entity",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> AK47 = ITEMS.register("ak_47",
+            () -> new AK47(new Item.Properties().stacksTo(1)));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

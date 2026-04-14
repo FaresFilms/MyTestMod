@@ -3,6 +3,8 @@ import com.mojang.logging.LogUtils;
 import net.kalf.kalfswarmod.entity.ModEntities;
 import net.kalf.kalfswarmod.item.ModCreativeModeTabs;
 import net.kalf.kalfswarmod.item.ModItems;
+import net.kalf.kalfswarmod.network.ModMessages;
+import net.kalf.kalfswarmod.sound.ModSounds;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -30,7 +32,9 @@ public class KalfsWarMod {
     {
         IEventBus modEventBus = context.getModEventBus();
 
-        ModCreativeModeTabs.register((modEventBus));
+        ModCreativeModeTabs.register(modEventBus);
+
+        ModSounds.register(modEventBus);
 
         ModItems.register(modEventBus);
 
@@ -48,15 +52,13 @@ public class KalfsWarMod {
 
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            ModMessages.register();
+        });
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ModItems.STEEL_INGOT);
-            event.accept(ModItems.SMALL_BULLET);
-        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

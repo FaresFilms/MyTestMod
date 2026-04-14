@@ -20,6 +20,7 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.STEEL_INGOT.get());
                         pOutput.accept(ModItems.SMALL_BULLET.get());
                         pOutput.accept(ModItems.GRENADE.get());
+                        pOutput.accept(ModItems.AK47.get());
                     })
                     .build());
 
