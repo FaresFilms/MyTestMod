@@ -3,7 +3,9 @@ package net.kalf.kalfswarmod.entity.custom;
 import net.kalf.kalfswarmod.entity.ModEntities;
 import net.kalf.kalfswarmod.item.ModItems;
 import net.kalf.kalfswarmod.sound.ModSounds;
+import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,9 +22,14 @@ public class SmallBulletProjectileEntity extends ThrowableItemProjectile {
     }
 
     private float bulletDamage;
+    private SoundEvent bulletImpactSound;
 
     public void setDamage(float newDamage) {
         this.bulletDamage = newDamage;
+    }
+
+    public void setBulletImpactSound(SoundEvent bulletImpactSound) {
+        this.bulletImpactSound = bulletImpactSound;
     }
 
     @Override
@@ -52,8 +59,11 @@ public class SmallBulletProjectileEntity extends ThrowableItemProjectile {
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        level().playSound(null, this.getX(), this.getY(), this.getZ(),
-                ModSounds.SMALL_EXPLOSION.get(), SoundSource.PLAYERS, 4.0f, 1.0f);
+
+        if (!this.level().isClientSide()) {
+            level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                    this.bulletImpactSound, SoundSource.PLAYERS, 0.4f, 1.0f);
+        }
         this.discard();
     }
 
@@ -62,7 +72,6 @@ public class SmallBulletProjectileEntity extends ThrowableItemProjectile {
         super.tick();
         if (this.level().isClientSide()) {
             this.level().addParticle(ParticleTypes.SMOKE, true, this.getX(), this.getY()+0.5d, this.getZ(), 0d, 0d, 0d);
-
         }
     }
 }

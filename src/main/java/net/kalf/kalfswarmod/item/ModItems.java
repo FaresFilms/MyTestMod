@@ -1,6 +1,7 @@
 package net.kalf.kalfswarmod.item;
 
 import net.kalf.kalfswarmod.KalfsWarMod;
+import net.kalf.kalfswarmod.sound.ModSounds;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -29,10 +30,14 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> AK47 = ITEMS.register("ak_47",
-            () -> new BaseGunItem(new Item.Properties().stacksTo(1), 3, SMALL_BULLET.get(), 5, 3));
+            () -> new BaseGunItem(new Item.Properties().stacksTo(1), 4, SMALL_BULLET.get(), 5, 3, ModSounds.GUN_SHOT_1, ModSounds.SMALL_EXPLOSION));
 
     public static final RegistryObject<Item> HUNTING_RIFLE = ITEMS.register("hunting_rifle",
-            () -> new BaseGunItem(new Item.Properties().stacksTo(1), 20, LARGE_BULLET.get(), 20,  4));
+            () -> new BaseGunItem(new Item.Properties().stacksTo(1), 40, LARGE_BULLET.get(), 20,  4, ModSounds.GUN_SHOT_1, ModSounds.BULLET_RICOCHET));
+
+    public static final RegistryObject<Item> P90 = ITEMS.register("p90",
+            () -> new BaseGunItem(new Item.Properties().stacksTo(1), 2, SMALL_BULLET.get(), 4,  4, ModSounds.GUN_SHOT_1, ModSounds.SMALL_EXPLOSION));
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

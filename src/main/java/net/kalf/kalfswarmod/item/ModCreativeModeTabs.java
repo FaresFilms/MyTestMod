@@ -23,6 +23,7 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.GRENADE.get());
                         pOutput.accept(ModItems.AK47.get());
                         pOutput.accept(ModItems.HUNTING_RIFLE.get());
+                        pOutput.accept(ModItems.P90.get());
                     })
                     .build());
 

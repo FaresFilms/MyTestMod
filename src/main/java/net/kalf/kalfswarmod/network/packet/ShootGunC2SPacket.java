@@ -35,31 +35,36 @@ public class ShootGunC2SPacket {
             if (player != null) {
                 var level = player.serverLevel();
                 if (player.getMainHandItem().getItem() instanceof BaseGunItem gun) {
-                    boolean hasAmmo = player.getAbilities().instabuild || player.getInventory().contains(new ItemStack(gun.getAmmoType()));
+                    if (!player.getCooldowns().isOnCooldown(gun)) {
 
-                    if (hasAmmo) {
-                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                                ModSounds.GUN_SHOT_1.get(), SoundSource.PLAYERS, 4.0f, 1.0f);
+                        boolean hasAmmo = player.getAbilities().instabuild || player.getInventory().contains(new ItemStack(gun.getAmmoType()));
 
-                        if (gun.getAmmoType() == ModItems.SMALL_BULLET.get()) {
-                            net.kalf.kalfswarmod.entity.custom.SmallBulletProjectileEntity bullet = new net.kalf.kalfswarmod.entity.custom.SmallBulletProjectileEntity(level, player);
-                            bullet.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, gun.getBulletSpeed(), 0.5f);
-                            bullet.setDamage(gun.getDamage());
-                            level.addFreshEntity(bullet);
-                        } else if (gun.getAmmoType() == ModItems.LARGE_BULLET.get()) {
-                            net.kalf.kalfswarmod.entity.custom.LargeBulletProjectileEntity bullet = new net.kalf.kalfswarmod.entity.custom.LargeBulletProjectileEntity(level, player);
-                            bullet.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, gun.getBulletSpeed(), 0.2f);
-                            bullet.setDamage(gun.getDamage());
-                            level.addFreshEntity(bullet);
-                        }
+                        if (hasAmmo) {
+                            level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                                    gun.getFiringSound().get(), SoundSource.PLAYERS, 4.0f, 1.0f);
 
-                        if (!player.getAbilities().instabuild) {
-                            int slot = player.getInventory().findSlotMatchingItem(new ItemStack(gun.getAmmoType()));
-                            if (slot != -1) {
-                                player.getInventory().getItem(slot).shrink(1);
+                            if (gun.getAmmoType() == ModItems.SMALL_BULLET.get()) {
+                                net.kalf.kalfswarmod.entity.custom.SmallBulletProjectileEntity bullet = new net.kalf.kalfswarmod.entity.custom.SmallBulletProjectileEntity(level, player);
+                                bullet.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, gun.getBulletSpeed(), 0.5f);
+                                bullet.setDamage(gun.getDamage());
+                                bullet.setBulletImpactSound(gun.getImpactSound().get());
+                                level.addFreshEntity(bullet);
+                            } else if (gun.getAmmoType() == ModItems.LARGE_BULLET.get()) {
+                                net.kalf.kalfswarmod.entity.custom.LargeBulletProjectileEntity bullet = new net.kalf.kalfswarmod.entity.custom.LargeBulletProjectileEntity(level, player);
+                                bullet.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, gun.getBulletSpeed(), 0.2f);
+                                bullet.setDamage(gun.getDamage());
+                                bullet.setBulletImpactSound(gun.getImpactSound().get());
+                                level.addFreshEntity(bullet);
                             }
+
+                            if (!player.getAbilities().instabuild) {
+                                int slot = player.getInventory().findSlotMatchingItem(new ItemStack(gun.getAmmoType()));
+                                if (slot != -1) {
+                                    player.getInventory().getItem(slot).shrink(1);
+                                }
+                            }
+                            player.getCooldowns().addCooldown(gun, gun.getFireRate());
                         }
-                        player.getCooldowns().addCooldown(gun, gun.getFireRate());
                     }
                 }
 

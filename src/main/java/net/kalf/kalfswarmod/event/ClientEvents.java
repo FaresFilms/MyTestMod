@@ -36,11 +36,13 @@ public class ClientEvents {
 
         if (mc.options.keyAttack.isDown()) {
 
-            if (mc.player.getMainHandItem().getItem() instanceof BaseGunItem) {
+            if (mc.player.getMainHandItem().getItem() instanceof BaseGunItem gun) {
 
                 if (!mc.player.getCooldowns().isOnCooldown(mc.player.getMainHandItem().getItem())) {
 
                     ModMessages.sendToServer(new ShootGunC2SPacket());
+
+                    mc.player.getCooldowns().addCooldown(gun, gun.getFireRate());
                 }
             }
         }

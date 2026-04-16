@@ -4,6 +4,7 @@ import net.kalf.kalfswarmod.entity.ModEntities;
 import net.kalf.kalfswarmod.item.ModItems;
 import net.kalf.kalfswarmod.sound.ModSounds;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,9 +22,14 @@ public class LargeBulletProjectileEntity extends ThrowableItemProjectile {
     }
 
     private float bulletDamage;
+    private SoundEvent bulletImpactSound;
 
     public void setDamage(float newDamage) {
         this.bulletDamage = newDamage;
+    }
+
+    public void setBulletImpactSound(SoundEvent bulletImpactSound) {
+        this.bulletImpactSound = bulletImpactSound;
     }
 
     @Override
@@ -53,8 +59,10 @@ public class LargeBulletProjectileEntity extends ThrowableItemProjectile {
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        level().playSound(null, this.getX(), this.getY(), this.getZ(),
-                ModSounds.BULLET_RICOCHET.get(), SoundSource.PLAYERS, 4.0f, 1.0f);
+        if (!this.level().isClientSide()) {
+            level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                    this.bulletImpactSound, SoundSource.PLAYERS, 0.4f, 1.0f);
+        }
         this.discard();
     }
 
@@ -62,8 +70,17 @@ public class LargeBulletProjectileEntity extends ThrowableItemProjectile {
     public void tick() {
         super.tick();
         if (this.level().isClientSide()) {
-            this.level().addParticle(ParticleTypes.SMOKE, true, this.getX(), this.getY()+0.5d, this.getZ(), 0d, 0d, 0d);
+            for (int i = 0; i<10; i++) {
+                double offsetX = (this.random.nextDouble() - 0.5) * 0.2;
+                double offsetY = (this.random.nextDouble() - 0.5) * 0.2;
+                double offsetZ = (this.random.nextDouble() - 0.5) * 0.2;
 
+                // Add the random offsets to the bullet's current position
+                this.level().addParticle(ParticleTypes.SMOKE, true,
+                        this.getX() + offsetX,
+                        this.getY() + 0.5d + offsetY,
+                        this.getZ() + offsetZ,
+                        0d, 0d, 0d);            }
         }
     }
 }

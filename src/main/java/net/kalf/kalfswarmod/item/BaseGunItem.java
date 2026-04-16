@@ -1,5 +1,6 @@
 package net.kalf.kalfswarmod.item;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -8,21 +9,27 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
+import java.util.function.Supplier;
+
 public class BaseGunItem extends Item {
 
      private final int fireRate;
      private final Item ammoType;
      private final int damage;
      private final float bulletSpeed;
+     private final Supplier<SoundEvent> firingSound;
+     private final Supplier<net.minecraft.sounds.SoundEvent> impactSound;
 
 
-    public BaseGunItem(Item.Properties pProperties, int fireRate, Item ammoType, int damage, float bulletSpeed) {
+    public BaseGunItem(Item.Properties pProperties, int fireRate, Item ammoType, int damage, float bulletSpeed, Supplier<net.minecraft.sounds.SoundEvent> firingSound, Supplier<net.minecraft.sounds.SoundEvent> impactSound) {
         super(pProperties);
 
         this.fireRate = fireRate;
         this.ammoType = ammoType;
         this.damage = damage;
         this.bulletSpeed = bulletSpeed;
+        this.firingSound = firingSound;
+        this.impactSound = impactSound;
     }
 
     public int getDamage() {
@@ -39,6 +46,14 @@ public class BaseGunItem extends Item {
 
     public Item getAmmoType() {
         return ammoType;
+    }
+
+    public Supplier<net.minecraft.sounds.SoundEvent> getImpactSound() {
+        return this.impactSound;
+    }
+
+    public Supplier<net.minecraft.sounds.SoundEvent> getFiringSound() {
+        return this.firingSound;
     }
 
     @Override

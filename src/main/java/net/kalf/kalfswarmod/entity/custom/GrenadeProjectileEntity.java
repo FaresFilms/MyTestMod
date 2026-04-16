@@ -4,6 +4,7 @@ import net.kalf.kalfswarmod.entity.ModEntities;
 import net.kalf.kalfswarmod.item.ModItems;
 import net.kalf.kalfswarmod.sound.ModSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
@@ -82,6 +83,9 @@ public class GrenadeProjectileEntity extends ThrowableItemProjectile {
             }
             this.level().playSound(null, center.getX(), center.getY(), center.getZ(),
                     ModSounds.SMALL_EXPLOSION.get(), SoundSource.BLOCKS, 4.0f, 1.0f);
+            ((net.minecraft.server.level.ServerLevel) this.level()).sendParticles(ParticleTypes.EXPLOSION,
+                    center.getX(), center.getY(), center.getZ(),
+                    1, 0.0D, 0.0D, 0.0D, 0.0D);
             this.discard();
         }
         super.onHit(pResult);
